@@ -14,7 +14,7 @@
 	</parent>
 
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<servlet-api.version>3.0.1</servlet-api.version>
 		<junit.version>4.10</junit.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
@@ -31,7 +31,8 @@
 		<jdbc.version>5.1.18</jdbc.version>
 		<proxy.servlet.version>1.6</proxy.servlet.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    	<docker.image.prefix>meruvian</docker.image.prefix>
+    </properties>
 
 	<licenses>
 		<license>
@@ -103,6 +104,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- tag::plugin[] -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.2.3</version>
+				<configuration>
+					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.basedir}/webapi</directory>
+							<include>${project.build.finalName}.war</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+    <!-- end::plugin[] -->
 		</plugins>
 	</build>
 
